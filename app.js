@@ -162,6 +162,63 @@ function renderMonthly() {
   const max = Math.max(income, expenses, 1);
   $("incomeBar").style.width = `${income / max * 100}%`;
   $("expenseBar").style.width = `${expenses / max * 100}%`;
+  renderSpendingDonut(current.filter(t => t.type === "expense"));
+}
+
+function renderSpendingDonut(monthExpenses) {
+  const donut = $("spendingDonut");
+  const legend = $("spendingLegend");
+  const totalEl = $("donutTotal");
+  if (!donut || !legend || !totalEl) return;
+
+  const colors = ["#48e0a4", "#7c83ff", "#ff8b6a", "#f7c65f", "#56b8ff", "#e879f9", "#ff6b91", "#9aa9bd"];
+  const groups = new Map();
+  monthExpenses.forEach(t => {
+    const category = t.category || "Outros";
+    groups.set(category, (groups.get(category) || 0) + t.amount);
+  });
+  const entries = [...groups.entries()].sort((a, b) => b[1] - a[1]);
+  const total = entries.reduce((sum, entry) => sum + entry[1], 0);
+  totalEl.textContent = money(total);
+  legend.replaceChildren();
+
+  if (!total || !entries.length) {
+    donut.style.background = "conic-gradient(#263349 0deg 360deg)";
+    const empty = document.createElement("p");
+    empty.className = "empty-chart";
+    empty.textContent = "Ainda não há despesas neste mês. Quando registrar, seus gastos aparecerão aqui.";
+    legend.append(empty);
+    return;
+  }
+
+  let cursor = 0;
+  const stops = [];
+  entries.forEach(([category, amount], index) => {
+    const start = cursor;
+    cursor += amount / total * 360;
+    stops.push(`${colors[index % colors.length]} ${start}deg ${cursor}deg`);
+  });
+  donut.style.background = `conic-gradient(${stops.join(", ")})`;
+
+  entries.forEach(([category, amount], index) => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    const swatch = document.createElement("span");
+    swatch.className = "legend-swatch";
+    swatch.style.background = colors[index % colors.length];
+    const details = document.createElement("div");
+    details.className = "legend-details";
+    const name = document.createElement("span");
+    name.className = "legend-name";
+    name.textContent = category;
+    const value = document.createElement("strong");
+    value.textContent = money(amount);
+    const percentage = document.createElement("small");
+    percentage.textContent = `${Math.round(amount / total * 100)}% das despesas`;
+    details.append(name, value, percentage);
+    item.append(swatch, details);
+    legend.append(item);
+  });
 }
 
 function renderTransactions() {
