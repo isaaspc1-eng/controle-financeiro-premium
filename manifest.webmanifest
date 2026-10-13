@@ -1,0 +1,13 @@
+
+{
+  "id": "./",
+  "name": "Controle Financeiro Premium",
+  "short_name": "Controle Financeiro",
+  "description": "Aplicativo pessoal para controle de receitas e despesas.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#101827"
+}
