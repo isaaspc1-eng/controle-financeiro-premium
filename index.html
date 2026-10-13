@@ -48,6 +48,40 @@
       </article>
     </section>
 
+    <section class="panel monthly-panel" id="analise-mensal">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ACOMPANHAMENTO</p>
+          <h2>Análise mensal</h2>
+          <p id="monthLabel">Resumo do mês atual</p>
+        </div>
+      </div>
+
+      <div class="monthly-chart" aria-label="Comparação mensal de receitas e despesas">
+        <div class="chart-row">
+          <div class="chart-label">
+            <span>Receitas</span>
+            <strong id="monthIncome">R$ 0,00</strong>
+          </div>
+          <div class="chart-track">
+            <div class="chart-bar chart-income" id="incomeBar"></div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-label">
+            <span>Despesas</span>
+            <strong id="monthExpenses">R$ 0,00</strong>
+          </div>
+          <div class="chart-track">
+            <div class="chart-bar chart-expense" id="expenseBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="notice">Os valores consideram os lançamentos registrados no mês atual.</p>
+    </section>
+
     <section class="panel" id="novo-lancamento">
       <div class="section-heading">
         <div>
