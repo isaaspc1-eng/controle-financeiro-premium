@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "controle-financeiro-v6";
+const CACHE_NAME = "controle-financeiro-v7";
 
 const FILES_TO_CACHE = [
   "./",
@@ -70,9 +70,23 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Arquivos estáticos ficam disponíveis offline no cache da versão atual.
+  // Busca a versão atual dos arquivos primeiro e mantém cópia para uso offline.
   event.respondWith(
-    caches.match(request)
-      .then(cached => cached || fetch(request))
+    fetch(request, { cache: "no-store" })
+      .then(response => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(async () => {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        return new Response("Arquivo indisponível offline.", {
+          status: 503,
+          headers: { "Content-Type": "text/plain; charset=utf-8" }
+        });
+      })
   );
 });
