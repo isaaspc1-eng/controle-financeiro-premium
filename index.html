@@ -147,6 +147,146 @@
       </div>
     </section>
 
+<!-- CONTAS A PAGAR -->
+<section class="panel" id="contas-pagar">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">ORGANIZAÇÃO FINANCEIRA</p>
+      <h2>Contas a pagar</h2>
+    </div>
+  </div>
+
+  <form id="billForm">
+    <label for="billDescription">Nome da conta</label>
+    <input id="billDescription" required placeholder="Ex.: aluguel, luz, internet">
+
+    <div class="form-grid">
+      <div>
+        <label for="billAmount">Valor (R$)</label>
+        <input id="billAmount" type="number" min="0.01" step="0.01" required>
+      </div>
+      <div>
+        <label for="billDueDate">Vencimento</label>
+        <input id="billDueDate" type="date" required>
+      </div>
+    </div>
+
+    <label for="billRecurrence">Repetição</label>
+    <select id="billRecurrence">
+      <option value="monthly">Todo mês</option>
+      <option value="once">Somente uma vez</option>
+    </select>
+
+    <button type="submit">Cadastrar conta</button>
+  </form>
+
+  <div id="billSummary"></div>
+  <div id="billList"></div>
+</section>
+
+<!-- HOLERITE E SALÁRIO -->
+<section class="panel" id="salario">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">RENDA</p>
+      <h2>Meu salário e holerite</h2>
+    </div>
+  </div>
+
+  <form id="salaryForm">
+    <label for="salaryMonth">Mês de referência</label>
+    <input id="salaryMonth" type="month" required>
+
+    <label for="salaryNet">Salário líquido recebido (R$)</label>
+    <input id="salaryNet" type="number" min="0" step="0.01" required placeholder="Valor após descontos">
+
+    <label for="salaryFile">Anexar holerite (PDF ou foto)</label>
+    <input id="salaryFile" type="file" accept=".pdf,image/*">
+
+    <button type="submit">Registrar salário</button>
+  </form>
+
+  <div id="salaryList"></div>
+</section>
+
+<!-- EXTRATO PICPAY -->
+<section class="panel" id="picpay">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">OUTRAS ENTRADAS E TAXAS</p>
+      <h2>PicPay</h2>
+    </div>
+  </div>
+
+  <p>Importe seu extrato para conferir as movimentações antes de registrá-las.</p>
+
+  <label for="picpayFile">Arquivo do extrato (CSV ou PDF)</label>
+  <input id="picpayFile" type="file" accept=".csv,.pdf">
+
+  <label for="picpayAmount">Calcular taxa de 3,09% sobre (R$)</label>
+  <input id="picpayAmount" type="number" min="0" step="0.01" placeholder="Valor cobrado">
+
+  <div id="picpayFeeResult" aria-live="polite"></div>
+  <button id="picpayCalculate" type="button">Calcular taxa</button>
+  <button id="picpayImport" type="button" class="secondary">Conferir extrato</button>
+
+  <div id="picpayPreview"></div>
+</section>
+
+<!-- GASTOS EXTRAS E NOTAS -->
+<section class="panel" id="gastos-extras">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">COMPRAS DO DIA A DIA</p>
+      <h2>Gastos extras</h2>
+    </div>
+  </div>
+
+  <form id="extraExpenseForm">
+    <label for="extraDescription">O que você comprou?</label>
+    <input id="extraDescription" required placeholder="Ex.: compra no mercado">
+
+    <label for="extraAmount">Valor total (R$)</label>
+    <input id="extraAmount" type="number" min="0.01" step="0.01" required placeholder="Total da nota">
+
+    <label for="extraDate">Data da compra</label>
+    <input id="extraDate" type="date" required>
+
+    <label for="extraReceipt">Foto da nota fiscal (opcional)</label>
+    <input id="extraReceipt" type="file" accept="image/*">
+
+    <button type="button" id="scanReceipt">Tentar ler QR Code</button>
+    <p id="receiptStatus" class="notice">Se a leitura não funcionar, confira a nota e digite o valor total acima.</p>
+
+    <button type="submit">Registrar gasto extra</button>
+  </form>
+</section>
+
+<!-- META DA ACADEMIA -->
+<section class="panel" id="meta-academia">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">SEU OBJETIVO</p>
+      <h2>Montar minha academia</h2>
+    </div>
+  </div>
+
+  <form id="gymGoalForm">
+    <label for="gymGoalName">Nome da meta</label>
+    <input id="gymGoalName" required value="Minha academia em casa">
+
+    <label for="gymGoalTarget">Custo estimado dos equipamentos (R$)</label>
+    <input id="gymGoalTarget" type="number" min="0.01" step="0.01" required placeholder="Quanto pretende gastar">
+
+    <label for="gymGoalSaved">Valor já guardado (R$)</label>
+    <input id="gymGoalSaved" type="number" min="0" step="0.01" value="0" required>
+
+    <button type="submit">Salvar meta</button>
+  </form>
+
+  <div id="gymGoalSummary"></div>
+</section>
+
     <section class="panel" id="backup">
       <p class="eyebrow">SEGURANÇA DOS DADOS</p>
       <h2>Backup e restauração</h2>
