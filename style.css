@@ -236,3 +236,132 @@ footer {
     gap: 10px;
   }
 }
+
+/* CORREÇÃO DEFINITIVA DO VISUAL DOS CARTÕES */
+
+body {
+  background: #080d18;
+  color: #f4f7fc;
+}
+
+main.container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 22px !important;
+}
+
+.panel {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 22px;
+  background: #111a2b;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.balance-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 175px;
+  padding: 26px;
+  border: 1px solid rgba(67, 224, 160, 0.3);
+  background: linear-gradient(135deg, #17463c, #102b30 65%, #111a2b);
+}
+
+.balance-card .card-label {
+  position: relative;
+  z-index: 1;
+  color: #c5e6da;
+  font-size: 12px;
+  letter-spacing: 1.4px;
+}
+
+.balance-card #balance {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 18px 0 10px;
+  color: #43e0a0;
+  font-size: clamp(32px, 7vw, 44px);
+  font-weight: 800;
+}
+
+.balance-card .balance-decoration {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+  color: rgba(255, 255, 255, 0.06);
+  font-size: 100px;
+  font-weight: 800;
+}
+
+.summary {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  width: 100%;
+}
+
+.summary-card {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 145px;
+  margin: 0;
+  padding: 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #172338, #101827);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+.summary-card .summary-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(67, 224, 160, 0.12);
+  color: #43e0a0;
+  font-size: 22px;
+}
+
+.summary-card.expense-card .summary-icon {
+  background: rgba(255, 113, 133, 0.12);
+  color: #ff7185;
+}
+
+.summary-card p {
+  margin: 0;
+  color: #a9b7cb;
+  font-size: 13px;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: clamp(16px, 4vw, 24px);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+#income {
+  color: #43e0a0;
+}
+
+#expenses {
+  color: #ff7185;
+}
+
+@media (max-width: 360px) {
+  .summary {
+    gap: 8px !important;
+  }
+
+  .summary-card {
+    padding: 13px 10px !important;
+  }
+}
