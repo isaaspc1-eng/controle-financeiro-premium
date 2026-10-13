@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Controle Financeiro Premium">
+  <title>Controle Financeiro Premium</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">GESTÃO FINANCEIRA PESSOAL</p>
+      <h1>Controle Financeiro <span>Premium</span></h1>
+    </div>
+    <span class="status" id="connectionStatus">Verificando conexão...</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <p class="eyebrow">VISÃO GERAL</p>
+      <h2>Seu dinheiro, sob controle.</h2>
+      <p>Organize receitas e despesas e acompanhe seu saldo.</p>
+    </section>
+
+    <section class="summary">
+      <article class="panel">
+        <p>Saldo atual</p>
+        <strong id="balance">R$ 0,00</strong>
+      </article>
+      <article class="panel">
+        <p>Receitas</p>
+        <strong id="income">R$ 0,00</strong>
+      </article>
+      <article class="panel">
+        <p>Despesas</p>
+        <strong id="expenses">R$ 0,00</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Novo lançamento</h2>
+      <form id="transactionForm">
+        <label for="description">Descrição</label>
+        <input id="description" maxlength="120" required
+          placeholder="Ex.: salário, mercado, aluguel">
+
+        <div class="form-grid">
+          <div>
+            <label for="amount">Valor (R$)</label>
+            <input id="amount" type="number" min="0.01"
+              step="0.01" required placeholder="0,00">
+          </div>
+          <div>
+            <label for="type">Tipo</label>
+            <select id="type">
+              <option value="expense">Despesa</option>
+              <option value="income">Receita</option>
+            </select>
+          </div>
+          <div>
+            <label for="date">Data</label>
+            <input id="date" type="date" required>
+          </div>
+          <div>
+            <label for="category">Categoria</label>
+            <select id="category">
+              <option>Moradia</option>
+              <option>Alimentação</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
+              <option>Salário</option>
+              <option>Contas</option>
+              <option>Lazer</option>
+              <option>Outros</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit">Adicionar lançamento</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Histórico financeiro</h2>
+        <button id="exportButton" class="secondary" type="button">
+          Exportar backup
+        </button>
+      </div>
+      <div id="transactionList">
+        <p>Nenhum lançamento registrado.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Backup e restauração</h2>
+      <p>Selecione um arquivo JSON exportado anteriormente.</p>
+      <input id="importFile" type="file" accept=".json,application/json">
+      <button id="importButton" class="secondary" type="button">
+        Importar backup
+      </button>
+      <p class="notice">Os registros ficam neste dispositivo. Faça backups regularmente.</p>
+    </section>
+  </main>
+
+  <footer>Controle Financeiro Premium</footer>
+  <script src="app.js" defer></script>
+</body>
+</html>
