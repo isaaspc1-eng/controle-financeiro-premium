@@ -50,6 +50,33 @@ function dateToday() {
   return localDate.toISOString().slice(0, 10);
 }
 
+function renderMonthly(income, expenses) {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = String(now.getFullYear());
+  const prefix = `${year}-${month}`;
+
+  const currentMonth = transactions.filter(t => t.date.startsWith(prefix));
+  const monthIncome = currentMonth
+    .filter(t => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+  const monthExpenses = currentMonth
+    .filter(t => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  $("monthLabel").textContent = now.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric"
+  });
+
+  $("monthIncome").textContent = money(monthIncome);
+  $("monthExpenses").textContent = money(monthExpenses);
+
+  const max = Math.max(monthIncome, monthExpenses, 1);
+  $("incomeBar").style.width = `${(monthIncome / max) * 100}%`;
+  $("expenseBar").style.width = `${(monthExpenses / max) * 100}%`;
+}
+
 function render() {
   const income = transactions
     .filter(t => t.type === "income")
@@ -62,6 +89,8 @@ function render() {
   $("balance").textContent = money(income - expenses);
   $("income").textContent = money(income);
   $("expenses").textContent = money(expenses);
+
+  renderMonthly(income, expenses);
 
   const list = $("transactionList");
   list.replaceChildren();
