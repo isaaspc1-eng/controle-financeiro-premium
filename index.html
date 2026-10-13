@@ -3,9 +3,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101827">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080e19">
   <meta name="description" content="Controle Financeiro Premium">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Controle Financeiro Premium</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
@@ -13,8 +15,8 @@
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">GESTÃO FINANCEIRA PESSOAL</p>
-      <h1>Controle Financeiro <span>Premium</span></h1>
+      <p class="eyebrow">SEU DINHEIRO, SOB CONTROLE</p>
+      <h1>Minhas <span>finanças.</span></h1>
     </div>
     <span class="status" id="connectionStatus">Verificando conexão...</span>
   </header>
@@ -22,27 +24,38 @@
   <main class="container">
     <section class="welcome">
       <p class="eyebrow">VISÃO GERAL</p>
-      <h2>Seu dinheiro, sob controle.</h2>
-      <p>Organize receitas e despesas e acompanhe seu saldo.</p>
+      <h2>Olá! Vamos organizar<br>suas finanças.</h2>
+      <p>Acompanhe seu dinheiro em um só lugar.</p>
+    </section>
+
+    <section class="panel balance-card">
+      <p class="card-label">SALDO ATUAL</p>
+      <strong id="balance">R$ 0,00</strong>
+      <p class="balance-caption">Receitas menos despesas registradas</p>
+      <div class="balance-decoration" aria-hidden="true">R$</div>
     </section>
 
     <section class="summary">
-      <article class="panel">
-        <p>Saldo atual</p>
-        <strong id="balance">R$ 0,00</strong>
-      </article>
-      <article class="panel">
+      <article class="panel summary-card income-card">
+        <div class="summary-icon" aria-hidden="true">↗</div>
         <p>Receitas</p>
         <strong id="income">R$ 0,00</strong>
       </article>
-      <article class="panel">
+      <article class="panel summary-card expense-card">
+        <div class="summary-icon" aria-hidden="true">↘</div>
         <p>Despesas</p>
         <strong id="expenses">R$ 0,00</strong>
       </article>
     </section>
 
-    <section class="panel">
-      <h2>Novo lançamento</h2>
+    <section class="panel" id="novo-lancamento">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MOVIMENTAÇÃO</p>
+          <h2>Novo lançamento</h2>
+        </div>
+      </div>
+
       <form id="transactionForm">
         <label for="description">Descrição</label>
         <input id="description" maxlength="120" required
@@ -79,34 +92,60 @@
             </select>
           </div>
         </div>
-        <button type="submit">Adicionar lançamento</button>
+
+        <button type="submit">+ Adicionar lançamento</button>
       </form>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="movimentacoes">
       <div class="section-heading">
-        <h2>Histórico financeiro</h2>
+        <div>
+          <p class="eyebrow">SUAS FINANÇAS</p>
+          <h2>Últimas movimentações</h2>
+        </div>
         <button id="exportButton" class="secondary" type="button">
           Exportar backup
         </button>
       </div>
+
       <div id="transactionList">
         <p>Nenhum lançamento registrado.</p>
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="backup">
+      <p class="eyebrow">SEGURANÇA DOS DADOS</p>
       <h2>Backup e restauração</h2>
-      <p>Selecione um arquivo JSON exportado anteriormente.</p>
+      <p>Guarde uma cópia dos seus registros para poder recuperá-los.</p>
+      <label for="importFile">Arquivo de backup (.json)</label>
       <input id="importFile" type="file" accept=".json,application/json">
       <button id="importButton" class="secondary" type="button">
         Importar backup
       </button>
-      <p class="notice">Os registros ficam neste dispositivo. Faça backups regularmente.</p>
+      <p class="notice">Por enquanto, os dados são armazenados neste dispositivo. A sincronização online será configurada separadamente.</p>
     </section>
   </main>
 
-  <footer>Controle Financeiro Premium</footer>
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <a href="#" class="nav-item active" aria-current="page">
+      <span aria-hidden="true">⌂</span>
+      <small>Início</small>
+    </a>
+    <a href="#movimentacoes" class="nav-item">
+      <span aria-hidden="true">⇄</span>
+      <small>Movimentações</small>
+    </a>
+    <a href="#novo-lancamento" class="nav-item">
+      <span aria-hidden="true">＋</span>
+      <small>Adicionar</small>
+    </a>
+    <a href="#backup" class="nav-item">
+      <span aria-hidden="true">⚙</span>
+      <small>Backup</small>
+    </a>
+  </nav>
+
+  <footer>Controle Financeiro Premium · Seus dados, seu controle.</footer>
   <script src="app.js" defer></script>
 </body>
 </html>
