@@ -1,547 +1,238 @@
 
-/* CONTROLE FINANCEIRO PREMIUM */
+/* AJUSTE DE LAYOUT — COMPATÍVEL COM O INDEX ATUAL */
 
-:root {
-  color-scheme: dark;
-  --background: #080d18;
-  --surface: #111a2b;
-  --surface-light: #172338;
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #f4f7fc;
-  --muted: #8d9bb1;
-  --green: #43e0a0;
-  --red: #ff7185;
-  --radius: 22px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 24px;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 50% -15%, #1c3150 0, transparent 45%),
-    var(--background);
-  color: var(--text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-header,
-main,
-footer {
-  width: min(100% - 40px, 1080px);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-header {
-  padding-top: 34px;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(25px, 4vw, 34px);
-  font-weight: 750;
-  letter-spacing: -1.2px;
-}
-
-h2,
-h3 {
-  letter-spacing: -0.4px;
-}
-
-p {
-  color: var(--muted);
-}
-
-.welcome {
-  padding: 20px 0 26px;
-}
-
-.welcome p {
-  margin: 7px 0 0;
-  font-size: 14px;
-}
-
-.panel {
-  position: relative;
-  overflow: hidden;
-  padding: 25px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: linear-gradient(145deg, #151f32, #101827);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
-}
-
-.balance-card {
-  min-height: 215px;
-  padding: 30px;
-  border: 1px solid rgba(114, 255, 199, 0.2);
-  border-radius: 27px;
-  background:
-    radial-gradient(ellipse at 100% 0%, rgba(67, 224, 160, 0.22), transparent 48%),
-    linear-gradient(125deg, #173a38 0%, #122a30 47%, #172238 100%);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.23);
-}
-
-.card-label {
-  display: block;
-  margin-bottom: 14px;
-  color: #c1d6d5;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.balance-card #balance,
-#balance {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  color: #ffffff;
-  font-size: clamp(30px, 5vw, 43px);
-  font-weight: 750;
-  letter-spacing: -1.5px;
-  overflow-wrap: anywhere;
-}
-
-.balance-decoration {
-  position: absolute;
-  right: -35px;
-  bottom: -90px;
-  width: 240px;
-  height: 240px;
-  border: 1px solid rgba(115, 255, 206, 0.13);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.balance-decoration::after {
-  position: absolute;
-  inset: 24px;
-  border: 1px solid rgba(115, 255, 206, 0.12);
-  border-radius: 50%;
-  content: "";
-}
-
-main {
-  padding-bottom: 110px;
-}
-
-main > section {
-  margin-top: 24px;
-}
-
-main > section > h2,
-.panel > h2 {
-  margin: 0 0 18px;
-  font-size: 19px;
-  font-weight: 700;
-}
-
-.summary-card {
-  min-width: 0;
-  padding: 21px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: linear-gradient(145deg, #151e2e, #101725);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-}
-
-.summary-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 16px;
-  border-radius: 14px;
-  background: rgba(67, 224, 160, 0.11);
-  color: var(--green);
-  font-size: 20px;
-}
-
-.summary-card .card-label {
-  margin-bottom: 7px;
-  color: var(--muted);
-}
-
-.summary-card h2,
-.summary-card h3,
-.summary-card p {
-  overflow-wrap: anywhere;
-}
-
-.summary-card h2,
-.summary-card h3 {
-  margin: 0;
-  font-size: clamp(20px, 3vw, 27px);
-  font-weight: 700;
-}
-
-.expense-card .summary-icon {
-  background: rgba(255, 113, 133, 0.11);
-  color: var(--red);
-}
-
-#income {
-  color: var(--green);
-}
-
-#expenses {
-  color: var(--red);
-}
-
-#transactionForm {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 17px;
-}
-
-#transactionForm label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: #cbd5e4;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-#transactionForm input,
-#transactionForm select,
-input,
-select {
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-  padding: 12px 14px;
-  border: 1px solid #2b3850;
-  border-radius: 13px;
-  outline: none;
-  background: #0c1423;
-  color: var(--text);
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus,
-select:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(67, 224, 160, 0.1);
-}
-
-#transactionForm button,
-button {
-  min-height: 46px;
-  padding: 12px 18px;
-  border: 0;
-  border-radius: 13px;
-  background: var(--green);
-  color: #092219;
-  font-weight: 750;
-  cursor: pointer;
-  transition: transform 0.15s, filter 0.15s;
-}
-
-#transactionForm button {
-  grid-column: 1 / -1;
-}
-
-button:hover {
-  filter: brightness(1.06);
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-#transactionList {
-  display: grid;
-  gap: 12px;
-}
-
-.transaction {
+/* Cabeçalho e indicador de conexão */
+.topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 17px;
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  background: #121b2a;
 }
 
-.transaction > div:first-child {
-  min-width: 0;
+.topbar h1 span {
+  color: var(--green);
 }
 
-.transaction h3,
-.transaction p {
-  margin: 0;
-  overflow-wrap: anywhere;
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
 }
 
-.transaction h3 {
-  font-size: 15px;
-  font-weight: 650;
-}
-
-.transaction p {
-  margin-top: 5px;
+.status {
+  flex-shrink: 0;
+  padding: 7px 11px;
+  border: 1px solid rgba(67, 224, 160, 0.22);
+  border-radius: 999px;
+  background: rgba(67, 224, 160, 0.08);
+  color: var(--green);
   font-size: 12px;
 }
 
-.transaction-right {
-  flex-shrink: 0;
-  text-align: right;
+/* Organização da tela principal */
+main.container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+main.container > section {
+  width: 100%;
+  margin-top: 0;
+}
+
+.welcome h2 {
+  margin: 0;
+  font-size: clamp(25px, 5vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -0.9px;
+}
+
+.welcome p:last-child {
+  margin-top: 12px;
+}
+
+/* Cartão de saldo */
+.balance-caption {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  color: #b9d2ce;
+  font-size: 13px;
+}
+
+/* Cartões de receitas e despesas lado a lado */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: -2px;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.summary-card p {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.summary-card strong {
+  display: block;
+  max-width: 100%;
+  font-size: clamp(16px, 3.8vw, 23px);
   font-weight: 750;
+  letter-spacing: -0.5px;
   overflow-wrap: anywhere;
 }
 
-.positive {
-  color: var(--green);
+.summary-card .summary-icon {
+  flex-shrink: 0;
 }
 
-.negative {
-  color: var(--red);
-}
-
-#backup {
-  margin-bottom: 30px;
-}
-
-#backup input {
-  margin: 8px 0 12px;
-}
-
-#backup button,
-#exportButton,
-#importButton {
-  margin: 5px 8px 5px 0;
-}
-
-.bottom-nav {
-  position: fixed;
-  z-index: 20;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 13, 24, 0.94);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-  padding: 11px 17px;
-  border-radius: 13px;
-  color: #9eacc0;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.2s, color 0.2s;
-}
-
-.nav-item:hover,
-.nav-item:focus-visible {
-  background: rgba(67, 224, 160, 0.1);
-  color: var(--green);
-}
-
-@media (min-width: 700px) {
-  main {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    align-items: start;
-  }
-
-  main > section {
-    margin-top: 0;
-  }
-
-  main > section:first-child,
-  main > section:nth-child(2),
-  main > section:has(.balance-card) {
-    grid-column: 1 / -1;
-  }
-
-  #transactionList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 520px) {
-  header,
-  main,
-  footer {
-    width: calc(100% - 28px);
-  }
-
-  header {
-    padding-top: 25px;
-  }
-
-  .welcome {
-    padding: 17px 0 21px;
-  }
-
-  .balance-card {
-    min-height: 190px;
-    padding: 24px;
-  }
-
-  .panel {
-    padding: 19px;
-    border-radius: 20px;
-  }
-
-  .summary-card {
-    padding: 17px;
-  }
-
-  #transactionForm {
-    grid-template-columns: 1fr;
-  }
-
-  #transactionForm button {
-    grid-column: auto;
-  }
-
-  .transaction {
-    padding: 14px;
-  }
-
-  .bottom-nav {
-    gap: 2px;
-    padding-right: 7px;
-    padding-left: 7px;
-  }
-
-  .nav-item {
-    flex: 1;
-    padding: 10px 5px;
-    font-size: 11px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-  }
-}
-
-/* ANÁLISE MENSAL — CONTROLE FINANCEIRO PREMIUM */
-.monthly-panel {
-  position: relative;
-  overflow: hidden;
-}
-
-.monthly-panel > .section-heading h2 {
-  margin-bottom: 6px;
-}
-
-#monthLabel {
-  color: #98a8bd;
-  font-size: 0.88rem;
-  text-transform: capitalize;
-}
-
-.monthly-chart {
-  display: grid;
-  gap: 24px;
-  margin: 26px 0 20px;
-}
-
-.chart-row {
-  display: grid;
-  gap: 10px;
-}
-
-.chart-label {
+/* Títulos das seções */
+.section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 0.92rem;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
-.chart-label span {
-  color: #b8c4d5;
+.section-heading h2 {
+  margin: 0;
+  font-size: 19px;
 }
 
-.chart-label strong {
-  color: #f4f7fb;
-  font-size: 0.95rem;
-  text-align: right;
+.section-heading .eyebrow {
+  margin-bottom: 6px;
 }
 
-.chart-track {
+.section-heading > div > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Formulário */
+#transactionForm label {
+  display: block;
+}
+
+#transactionForm input,
+#transactionForm select {
+  margin-top: 8px;
+}
+
+#transactionForm button {
   width: 100%;
-  height: 11px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: #202b3d;
 }
 
-.chart-bar {
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  transition: width 0.45s ease;
+/* Histórico: os elementos reais são strong e p */
+.transaction strong {
+  overflow-wrap: anywhere;
 }
 
-.chart-income {
-  background: linear-gradient(90deg, #10b981, #6ee7b7);
+.transaction > div:first-child > strong {
+  display: block;
+  font-size: 14px;
 }
 
-.chart-expense {
-  background: linear-gradient(90deg, #f59e0b, #fb7185);
+.transaction-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 52%;
 }
 
-.monthly-panel .notice {
-  margin-top: 18px;
+.transaction-right button {
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #344159;
+  background: #1a2639;
+  color: #dbe5f3;
+  font-size: 12px;
 }
 
-@media (min-width: 760px) {
-  .monthly-chart {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
+/* Backup e rodapé */
+.notice {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+footer {
+  padding: 10px 0 110px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Navegação inferior com ícone e legenda */
+.bottom-nav {
+  justify-content: space-around;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+}
+
+.nav-item span {
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.nav-item small {
+  font-size: 11px;
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 520px) {
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .status {
+    margin-top: 4px;
+    font-size: 11px;
+  }
+
+  .summary {
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 16px 13px;
+  }
+
+  .summary-card strong {
+    font-size: clamp(15px, 4vw, 19px);
+  }
+
+  .section-heading {
+    align-items: flex-start;
+  }
+
+  #exportButton {
+    max-width: 125px;
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+
+  .transaction {
+    align-items: flex-start;
+    gap: 10px;
   }
 }
