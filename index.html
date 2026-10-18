@@ -1,346 +1,40 @@
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080e19">
-  <meta name="description" content="Controle Financeiro Premium">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Controle Financeiro Premium</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="topbar">
-    <div>
-      <p class="eyebrow">SEU DINHEIRO, SOB CONTROLE</p>
-      <h1>Minhas <span>finanças.</span></h1>
-    </div>
-    <span class="status" id="connectionStatus">Verificando conexão...</span>
-  </header>
-
-  <main class="container">
-    <section class="welcome">
-      <p class="eyebrow">VISÃO GERAL</p>
-      <h2>Olá! Vamos organizar<br>suas finanças.</h2>
-      <p>Acompanhe seu dinheiro em um só lugar.</p>
-    </section>
-
-    <section class="panel balance-card">
-      <p class="card-label">SALDO ATUAL</p>
-      <strong id="balance">R$ 0,00</strong>
-      <p class="balance-caption">Receitas menos despesas registradas</p>
-      <div class="balance-decoration" aria-hidden="true">R$</div>
-    </section>
-
-    <section class="summary">
-      <article class="panel summary-card income-card">
-        <div class="summary-icon" aria-hidden="true">↗</div>
-        <p>Receitas</p>
-        <strong id="income">R$ 0,00</strong>
-      </article>
-      <article class="panel summary-card expense-card">
-        <div class="summary-icon" aria-hidden="true">↘</div>
-        <p>Despesas</p>
-        <strong id="expenses">R$ 0,00</strong>
-      </article>
-    </section>
-
-    <section class="panel monthly-panel" id="analise-mensal">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">ACOMPANHAMENTO</p>
-          <h2>Análise mensal</h2>
-          <p id="monthLabel">Resumo do mês atual</p>
-        </div>
-      </div>
-
-      <div class="monthly-chart" aria-label="Comparação mensal de receitas e despesas">
-        <div class="chart-row">
-          <div class="chart-label">
-            <span>Receitas</span>
-            <strong id="monthIncome">R$ 0,00</strong>
-          </div>
-          <div class="chart-track">
-            <div class="chart-bar chart-income" id="incomeBar"></div>
-          </div>
-        </div>
-
-        <div class="chart-row">
-          <div class="chart-label">
-            <span>Despesas</span>
-            <strong id="monthExpenses">R$ 0,00</strong>
-          </div>
-          <div class="chart-track">
-            <div class="chart-bar chart-expense" id="expenseBar"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="spending-breakdown">
-        <div class="section-heading spending-heading">
-          <div>
-            <p class="eyebrow">PARA ONDE VAI O DINHEIRO</p>
-            <h3>Gastos por categoria</h3>
-          </div>
-          <span class="period-pill">Este mês</span>
-        </div>
-        <div class="spending-visual">
-          <div class="spending-donut" id="spendingDonut" role="img" aria-label="Gráfico de despesas por categoria">
-            <div class="donut-center">
-              <strong id="donutTotal">R$ 0,00</strong>
-              <span>gastos no mês</span>
-            </div>
-          </div>
-          <div class="spending-legend" id="spendingLegend">
-            <p class="empty-chart">Registre despesas para visualizar a divisão dos gastos.</p>
-          </div>
-        </div>
-      </div>
-
-      <p class="notice">Os valores consideram os lançamentos registrados no mês atual.</p>
-    </section>
-
-    <section class="panel" id="novo-lancamento">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">MOVIMENTAÇÃO</p>
-          <h2>Novo lançamento</h2>
-        </div>
-      </div>
-
-      <form id="transactionForm">
-        <label for="description">Descrição</label>
-        <input id="description" maxlength="120" required
-          placeholder="Ex.: salário, mercado, aluguel">
-
-        <div class="form-grid">
-          <div>
-            <label for="amount">Valor (R$)</label>
-            <input id="amount" type="number" min="0.01"
-              step="0.01" required placeholder="0,00">
-          </div>
-          <div>
-            <label for="type">Tipo</label>
-            <select id="type">
-              <option value="expense">Despesa</option>
-              <option value="income">Receita</option>
-            </select>
-          </div>
-          <div>
-            <label for="date">Data</label>
-            <input id="date" type="date" required>
-          </div>
-          <div>
-            <label for="category">Categoria</label>
-            <select id="category">
-              <option>Moradia</option>
-              <option>Alimentação</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
-              <option>Salário</option>
-              <option>Contas</option>
-              <option>Lazer</option>
-              <option>Outros</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="submit">+ Adicionar lançamento</button>
-      </form>
-    </section>
-
-    <section class="panel" id="movimentacoes">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">SUAS FINANÇAS</p>
-          <h2>Últimas movimentações</h2>
-        </div>
-        <button id="exportButton" class="secondary" type="button">
-          Exportar backup
-        </button>
-      </div>
-
-      <div id="transactionList">
-        <p>Nenhum lançamento registrado.</p>
-      </div>
-    </section>
-
-<!-- CONTAS A PAGAR -->
-<section class="panel" id="contas-pagar">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">ORGANIZAÇÃO FINANCEIRA</p>
-      <h2>Contas a pagar</h2>
-    </div>
-  </div>
-
-  <form id="billForm">
-    <label for="billDescription">Nome da conta</label>
-    <input id="billDescription" required placeholder="Ex.: aluguel, luz, internet">
-
-    <div class="form-grid">
-      <div>
-        <label for="billAmount">Valor (R$)</label>
-        <input id="billAmount" type="number" min="0.01" step="0.01" required>
-      </div>
-      <div>
-        <label for="billDueDate">Vencimento</label>
-        <input id="billDueDate" type="date" required>
-      </div>
-    </div>
-
-    <label for="billRecurrence">Repetição</label>
-    <select id="billRecurrence">
-      <option value="monthly">Todo mês</option>
-      <option value="once">Somente uma vez</option>
-    </select>
-
-    <button type="submit">Cadastrar conta</button>
-  </form>
-
-  <div id="billSummary"></div>
-  <div id="billList"></div>
-</section>
-
-<!-- HOLERITE E SALÁRIO -->
-<section class="panel" id="salario">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">RENDA</p>
-      <h2>Meu salário e holerite</h2>
-    </div>
-  </div>
-
-  <form id="salaryForm">
-    <label for="salaryMonth">Mês de referência</label>
-    <input id="salaryMonth" type="month" required>
-
-    <label for="salaryNet">Salário líquido recebido (R$)</label>
-    <input id="salaryNet" type="number" min="0" step="0.01" required placeholder="Valor após descontos">
-
-    <label for="salaryFile">Anexar holerite (PDF ou foto)</label>
-    <input id="salaryFile" type="file" accept=".pdf,image/*">
-
-    <button type="submit">Registrar salário</button>
-  </form>
-
-  <div id="salaryList"></div>
-</section>
-
-<!-- EXTRATO PICPAY -->
-<section class="panel" id="picpay">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">OUTRAS ENTRADAS E TAXAS</p>
-      <h2>PicPay</h2>
-    </div>
-  </div>
-
-  <p>Importe seu extrato para conferir as movimentações antes de registrá-las.</p>
-
-  <label for="picpayFile">Arquivo do extrato (CSV ou PDF)</label>
-  <input id="picpayFile" type="file" accept=".csv,.pdf">
-
-  <label for="picpayAmount">Calcular taxa de 3,09% sobre (R$)</label>
-  <input id="picpayAmount" type="number" min="0" step="0.01" placeholder="Valor cobrado">
-
-  <div id="picpayFeeResult" aria-live="polite"></div>
-  <button id="picpayCalculate" type="button">Calcular taxa</button>
-  <button id="picpayImport" type="button" class="secondary">Conferir extrato</button>
-
-  <div id="picpayPreview"></div>
-</section>
-
-<!-- GASTOS EXTRAS E NOTAS -->
-<section class="panel" id="gastos-extras">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">COMPRAS DO DIA A DIA</p>
-      <h2>Gastos extras</h2>
-    </div>
-  </div>
-
-  <form id="extraExpenseForm">
-    <label for="extraDescription">O que você comprou?</label>
-    <input id="extraDescription" required placeholder="Ex.: compra no mercado">
-
-    <label for="extraAmount">Valor total (R$)</label>
-    <input id="extraAmount" type="number" min="0.01" step="0.01" required placeholder="Total da nota">
-
-    <label for="extraDate">Data da compra</label>
-    <input id="extraDate" type="date" required>
-
-    <label for="extraReceipt">Foto da nota fiscal (opcional)</label>
-    <input id="extraReceipt" type="file" accept="image/*">
-
-    <button type="button" id="scanReceipt">Tentar ler QR Code</button>
-    <p id="receiptStatus" class="notice">Se a leitura não funcionar, confira a nota e digite o valor total acima.</p>
-
-    <button type="submit">Registrar gasto extra</button>
-  </form>
-</section>
-
-<!-- META DA ACADEMIA -->
-<section class="panel" id="meta-academia">
-  <div class="section-heading">
-    <div>
-      <p class="eyebrow">SEU OBJETIVO</p>
-      <h2>Montar minha academia</h2>
-    </div>
-  </div>
-
-  <form id="gymGoalForm">
-    <label for="gymGoalName">Nome da meta</label>
-    <input id="gymGoalName" required value="Minha academia em casa">
-
-    <label for="gymGoalTarget">Custo estimado dos equipamentos (R$)</label>
-    <input id="gymGoalTarget" type="number" min="0.01" step="0.01" required placeholder="Quanto pretende gastar">
-
-    <label for="gymGoalSaved">Valor já guardado (R$)</label>
-    <input id="gymGoalSaved" type="number" min="0" step="0.01" value="0" required>
-
-    <button type="submit">Salvar meta</button>
-  </form>
-
-  <div id="gymGoalSummary"></div>
-</section>
-
-    <section class="panel" id="backup">
-      <p class="eyebrow">SEGURANÇA DOS DADOS</p>
-      <h2>Backup e restauração</h2>
-      <p>Guarde uma cópia dos seus registros para poder recuperá-los.</p>
-      <label for="importFile">Arquivo de backup (.json)</label>
-      <input id="importFile" type="file" accept=".json,application/json">
-      <button id="importButton" class="secondary" type="button">
-        Importar backup
-      </button>
-      <p class="notice">Por enquanto, os dados são armazenados neste dispositivo. A sincronização online será configurada separadamente.</p>
-    </section>
-  </main>
-
-  <nav class="bottom-nav" aria-label="Navegação principal">
-    <a href="#" class="nav-item active" aria-current="page">
-      <span aria-hidden="true">⌂</span>
-      <small>Início</small>
-    </a>
-    <a href="#movimentacoes" class="nav-item">
-      <span aria-hidden="true">⇄</span>
-      <small>Movimentações</small>
-    </a>
-    <a href="#novo-lancamento" class="nav-item">
-      <span aria-hidden="true">＋</span>
-      <small>Adicionar</small>
-    </a>
-    <a href="#backup" class="nav-item">
-      <span aria-hidden="true">⚙</span>
-      <small>Backup</small>
-    </a>
-  </nav>
-
-  <footer>Controle Financeiro Premium · Seus dados, seu controle.</footer>
-  <script src="app.js" defer></script>
-</body>
-</html>
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101010"><link rel="manifest" href="manifest.json"><title>Meu Financeiro Premium</title>
+<style>
+:root{color-scheme:dark;--bg:#0c0d0f;--panel:#17191c;--panel2:#222428;--text:#f4f2ec;--muted:#a4a5a7;--line:#303136;--gold:#d6b15e;--green:#6fd0a0;--red:#f07474} [data-theme=light]{color-scheme:light;--bg:#f4f2ec;--panel:#fff;--panel2:#efede6;--text:#1b1b1b;--muted:#666;--line:#ddd8ce;--gold:#9d7622}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:var(--panel);border-right:1px solid var(--line);padding:24px 14px;display:flex;flex-direction:column;gap:24px}.brand{font-weight:850;letter-spacing:.07em;padding:0 8px}.brand span{display:block;color:var(--gold);font-size:10px;letter-spacing:.2em}.nav{display:grid;gap:5px}.nav button,.mobile button{border:0;background:transparent;color:var(--muted);padding:12px;text-align:left;border-radius:9px}.nav button.active,.mobile button.active{background:var(--panel2);color:var(--gold)}.side small{margin-top:auto;color:var(--muted)}main{padding:26px clamp(12px,3vw,36px);max-width:1500px;width:100%;margin:auto}.top,.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.eyebrow{font-size:10px;letter-spacing:.2em;color:var(--gold);font-weight:800}.top h1{margin:3px 0;font-size:clamp(24px,3vw,34px)}.btn{background:var(--panel);color:var(--text);border:1px solid var(--line);padding:9px 12px;border-radius:9px}.btn.primary{background:var(--gold);border-color:var(--gold);color:#17130a;font-weight:800}.btn.danger{color:var(--red)}.page{display:none}.page.active{display:block}.grid{display:grid;gap:13px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.cols{grid-template-columns:1.2fr 1fr}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}.label,.muted{color:var(--muted);font-size:12px}.value{font-size:clamp(20px,2.4vw,28px);font-weight:800;margin:9px 0;overflow-wrap:anywhere}.green{color:var(--green)}.gold{color:var(--gold)}.negative{color:var(--red)}.page h2{font-size:23px;margin:0 0 5px}.desc{color:var(--muted);font-size:13px;margin:0 0 18px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.toolbar input,.toolbar select,.field input,.field select{background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:10px;border-radius:8px;min-width:0}.field{display:grid;gap:5px}.field label{font-size:11px;color:var(--muted)}.field input,.field select{width:100%}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px;min-width:520px}th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase}td,th{padding:10px 7px;border-bottom:1px solid var(--line)}.actions{display:flex;gap:5px;flex-wrap:wrap}.sm{font-size:11px;padding:5px 8px}.empty{text-align:center;color:var(--muted);padding:24px}.notice{border:1px solid #9d762244;padding:12px;border-radius:10px;color:var(--muted);font-size:12px;margin:12px 0}.bar{display:grid;grid-template-columns:90px 1fr 80px;gap:8px;align-items:center;font-size:11px;margin:12px 0}.track,.progress{height:8px;background:var(--panel2);border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--gold)}.modalbg{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:14px;z-index:10}.modal{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;width:min(550px,100%);max-height:90vh;overflow:auto}.modalfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gold);color:#17130a;padding:10px 15px;border-radius:9px;z-index:20;font-weight:700}.mobile{display:none}.progress{height:10px;margin:12px 0}.progress div{height:100%;background:var(--gold)}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}}@media(max-width:650px){.app{display:block}.side{display:none}main{padding:17px 12px 85px}.top h1{font-size:24px}.top .btn:not(.primary){display:none}.mobile{position:fixed;display:flex;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom));z-index:5}.mobile button{font-size:10px;text-align:center;padding:8px 5px}.card{padding:13px}.value{font-size:21px}.formgrid{grid-template-columns:1fr 1fr}.bar{grid-template-columns:75px 1fr 75px}}@media(max-width:370px){.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style></head><body><div class="app"><aside class="side"><div class="brand">MEU FINANCEIRO<span>PREMIUM</span></div><nav class="nav" id="nav"></nav><small>Dados salvos neste dispositivo</small></aside><main><header class="top"><div><div class="eyebrow">CONTROLE INTELIGENTE</div><h1 id="heading">Visão geral</h1></div><div><button class="btn" id="theme">◐ Tema</button> <button class="btn primary" id="quick">＋ Lançamento</button></div></header>
+<section id="dashboard" class="page active"><div class="head"><div><h2>Seu mês em resumo</h2><div class="muted">Valores calculados a partir dos registros</div></div><input type="month" id="month"></div><div class="grid stats"><div class="card"><div class="label">Entradas</div><div class="value green" id="income">R$ 0,00</div></div><div class="card"><div class="label">Despesas</div><div class="value negative" id="expenses">R$ 0,00</div></div><div class="card"><div class="label">Contas em aberto</div><div class="value gold" id="open">R$ 0,00</div></div><div class="card"><div class="label">Saldo projetado</div><div class="value" id="balance">R$ 0,00</div></div></div><div class="grid cols"><div class="card"><h3>Despesas por categoria</h3><div id="bars"></div></div><div class="card"><h3>Próximas contas</h3><div id="upcoming"></div></div><div class="card"><h3>Últimas movimentações</h3><div id="recent"></div></div><div class="card"><h3>Resumo do cartão</h3><div id="cardSummary"></div><button class="btn" data-go="card">Abrir cartão</button></div></div><p class="muted">O saldo é uma estimativa, não uma consulta bancária.</p></section>
+<section id="transactions" class="page"><h2>Movimentações</h2><p class="desc">Registre receitas e despesas e filtre o histórico.</p><div class="toolbar"><input id="txq" placeholder="Buscar"><select id="txtype"><option value="">Todos os tipos</option><option value="income">Entradas</option><option value="expense">Despesas</option></select><input type="month" id="txmonth"><button class="btn primary" id="newtx">＋ Lançamento</button></div><div class="card tablewrap" id="txtable"></div></section>
+<section id="bills" class="page"><h2>Contas e parcelas</h2><p class="desc">Acompanhe vencimentos e marque contas pagas.</p><div class="toolbar"><input id="billq" placeholder="Buscar conta"><button class="btn primary" id="newbill">＋ Nova conta</button></div><div class="card tablewrap" id="billtable"></div></section>
+<section id="card" class="page"><h2>Cartão de crédito</h2><p class="desc">Controle compras e limite. Compras entram nas despesas.</p><div class="grid stats"><div class="card"><div class="label">Limite</div><div class="value" id="climit"></div></div><div class="card"><div class="label">Compras no mês</div><div class="value gold" id="cused"></div></div><div class="card"><div class="label">Disponível</div><div class="value green" id="cavailable"></div></div><div class="card"><div class="label">Fatura informada</div><div class="value" id="cbill"></div></div></div><div class="toolbar"><button class="btn primary" id="newpurchase">＋ Registrar compra</button><button class="btn" id="limit">Definir limite</button><button class="btn" id="manualbill">Informar fatura</button></div><div class="card tablewrap" id="cardtable"></div><p class="muted">O pagamento da fatura não cria uma nova despesa, evitando duplicidade.</p></section>
+<section id="goal" class="page"><h2>Meta: academia em casa</h2><p class="desc">Planeje o custo e acompanhe o valor guardado.</p><div class="grid cols"><div class="card"><div class="field"><label>Meta total (R$)</label><input id="target" type="number" min="0" step=".01"></div><div class="field"><label>Já guardado (R$)</label><input id="saved" type="number" min="0" step=".01"></div><div class="field"><label>Contribuição mensal (R$)</label><input id="monthly" type="number" min="0" step=".01"></div><button class="btn primary" id="savegoal">Salvar meta</button><div id="goalSummary"></div></div><div class="card"><h3>Equipamentos</h3><form id="equipform" class="formgrid"><div class="field"><label>Equipamento</label><input id="ename" required></div><div class="field"><label>Preço (R$)</label><input id="eprice" type="number" min="0" step=".01" required></div><button class="btn primary wide">Adicionar</button></form><div id="equiplist"></div></div></div></section>
+<section id="imports" class="page"><h2>Importar e exportar</h2><p class="desc">Faça cópia de segurança dos seus dados.</p><div class="card"><button class="btn primary" id="export">Exportar backup JSON</button><div class="field" style="margin-top:14px"><label>Restaurar backup JSON</label><input type="file" id="backup" accept=".json"></div><button class="btn" id="restore" style="margin-top:10px">Restaurar backup</button><hr><div class="field"><label>Importar movimentações CSV (data,descricao,tipo,categoria,valor)</label><input type="file" id="csv" accept=".csv"></div><button class="btn" id="readcsv" style="margin-top:10px">Ler CSV</button><div id="preview"></div><button class="btn primary" id="confirmcsv" hidden>Confirmar importação</button><p class="muted">Não há conexão bancária automática nem leitura automática de holerite/PDF nesta versão.</p></div></section>
+<section id="settings" class="page"><h2>Configurações</h2><p class="desc">Preferências do aplicativo.</p><div class="card"><button class="btn" id="theme2">Alternar tema</button><p><button class="btn" id="notify">Pedir permissão de notificação</button></p><p><button class="btn danger" id="clear">Apagar dados deste dispositivo</button></p><div class="notice">Os dados ficam neste dispositivo. Exporte um backup para não perdê-los.</div></div></section>
+</main></div><nav class="mobile" id="mobilenav"></nav><div id="modal"></div><div id="toast"></div>
+<script>
+(()=>{const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)],money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),today=()=>new Date().toISOString().slice(0,10),month=()=>today().slice(0,7),id=()=>Math.random().toString(36).slice(2)+Date.now().toString(36),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const defaults=()=>({transactions:[],bills:[],purchases:[],limit:300,manualBill:null,goal:{target:0,saved:0,monthly:0},equipment:[],theme:'dark'});let S;try{S=JSON.parse(localStorage.getItem('mfp')||'null')}catch{}S=S&&typeof S==='object'?{...defaults(),...S}:defaults();S.transactions=Array.isArray(S.transactions)?S.transactions:[];S.bills=Array.isArray(S.bills)?S.bills:[];S.purchases=Array.isArray(S.purchases)?S.purchases:[];S.goal={...defaults().goal,...(S.goal||{})};S.equipment=Array.isArray(S.equipment)?S.equipment:[];
+const cats=['Carro/parcelas','Dívidas','Internet/telefone','Alimentação','Combustível/transporte','Cartão de crédito','Saúde','Casa','Lazer','Salário','Benefícios/outras entradas','Outros'];function persist(){localStorage.setItem('mfp',JSON.stringify(S));render()}function say(s){$('#toast').innerHTML='<div class="toast">'+esc(s)+'</div>';setTimeout(()=>$('#toast').innerHTML='',2200)}function go(p){all('.page').forEach(x=>x.classList.toggle('active',x.id===p));all('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));$('#heading').textContent=({dashboard:'Visão geral',transactions:'Movimentações',bills:'Contas e parcelas',card:'Cartão de crédito',goal:'Meta academia',imports:'Importar/exportar',settings:'Configurações'})[p]||'Meu Financeiro';scrollTo(0,0)}function status(b){return b.status==='paid'?'paid':b.due&&b.due<today()?'overdue':'open'}function blank(cols,msg='Nenhum registro encontrado.'){return '<table><thead><tr>'+cols.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody><tr><td colspan="'+cols.length+'"><div class="empty">'+msg+'</div></td></tr></tbody></table>'}
+function txhtml(items){return items.length?'<table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th><th>Ações</th></tr></thead><tbody>'+items.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.description)+'</td><td>'+esc(x.category)+'</td><td>'+(x.type==='income'?'Entrada':'Despesa')+'</td><td>'+money(x.amount)+'</td><td><button class="btn sm" data-edit-tx="'+x.id+'">Editar</button> <button class="btn sm danger" data-del-tx="'+x.id+'">Excluir</button></td></tr>').join('')+'</tbody></table>':blank(['Data','Descrição','Categoria','Tipo','Valor','Ações'])}
+function billhtml(items){return items.length?'<table><thead><tr><th>Vencimento</th><th>Conta</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody>'+items.slice().sort((a,b)=>(a.due||'').localeCompare(b.due||'')).map(x=>'<tr><td>'+esc(x.due)+'</td><td>'+esc(x.name)+'</td><td>'+money(x.amount)+'</td><td class="'+status(x)+'">'+(status(x)==='paid'?'Paga':status(x)==='overdue'?'Atrasada':'Em aberto')+'</td><td>'+(status(x)!=='paid'?'<button class="btn sm" data-pay="'+x.id+'">Pagar</button> ':'')+'<button class="btn sm" data-edit-bill="'+x.id+'">Editar</button> <button class="btn sm danger" data-del-bill="'+x.id+'">Excluir</button></td></tr>').join('')+'</tbody></table>':blank(['Vencimento','Conta','Valor','Status','Ações'])}
+function txs(m){return S.transactions.filter(x=>(x.date||'').startsWith(m))}function exps(m){return [...txs(m).filter(x=>x.type==='expense'),...S.purchases.filter(x=>(x.date||'').startsWith(m)).map(x=>({...x,type:'expense'}))]}function totals(m){let inc=txs(m).filter(x=>x.type==='income').reduce((a,x)=>a+ +x.amount,0),exp=exps(m).reduce((a,x)=>a+ +x.amount,0),bs=S.bills.filter(x=>(x.due||'').startsWith(m)&&status(x)!=='paid');return{inc,exp,open:bs.reduce((a,x)=>a+ +x.amount,0),balance:inc-exp-bs.reduce((a,x)=>a+ +x.amount,0),bs}}
+function renderDash(){let m=$('#month').value||month(),t=totals(m);$('#income').textContent=money(t.inc);$('#expenses').textContent=money(t.exp);$('#open').textContent=money(t.open);$('#balance').textContent=money(t.balance);$('#balance').className='value '+(t.balance>=0?'green':'negative');let by={};exps(m).forEach(x=>by[x.category||'Outros']=(by[x.category||'Outros']||0)+ +x.amount);let rows=Object.entries(by).sort((a,b)=>b[1]-a[1]),sum=rows.reduce((a,x)=>a+x[1],0);$('#bars').innerHTML=rows.length?rows.map(([c,v])=>'<div class="bar"><span>'+esc(c)+'</span><div class="track"><div class="fill" style="width:'+(sum?v/sum*100:0)+'%"></div></div><b>'+money(v)+'</b></div>').join(''):'<div class="empty">Sem despesas neste mês.</div>';$('#upcoming').innerHTML=t.bs.length?t.bs.slice().sort((a,b)=>(a.due||'').localeCompare(b.due||'')).slice(0,6).map(x=>'<p><b>'+esc(x.name)+'</b><br><span class="muted">'+esc(x.due)+'</span><b style="float:right">'+money(x.amount)+'</b></p>').join(''):'<div class="empty">Nenhuma conta pendente.</div>';let recent=txs(m).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);$('#recent').innerHTML=recent.length?recent.map(x=>'<p><b>'+esc(x.description)+'</b><br><span class="muted">'+esc(x.date)+' · '+esc(x.category)+'</span><b style="float:right">'+money(x.amount)+'</b></p>').join(''):'<div class="empty">Sem movimentações.</div>';let used=S.purchases.filter(x=>(x.date||'').startsWith(m)).reduce((a,x)=>a+ +x.amount,0);$('#cardSummary').innerHTML='<div class="value">'+money(used)+'</div><div class="muted">Compras do mês · '+money(Math.max(0,S.limit-used))+' disponíveis</div>'}
+function renderTx(){let q=($('#txq').value||'').toLowerCase(),type=$('#txtype').value,m=$('#txmonth').value;$('#txtable').innerHTML=txhtml(S.transactions.filter(x=>(!q||(x.description+' '+x.category).toLowerCase().includes(q))&&(!type||x.type===type)&&(!m||(x.date||'').startsWith(m))))}
+function renderBills(){let q=($('#billq').value||'').toLowerCase();$('#billtable').innerHTML=billhtml(S.bills.filter(x=>!q||x.name.toLowerCase().includes(q)))}
+function renderCard(){let m=month(),used=S.purchases.filter(x=>(x.date||'').startsWith(m)).reduce((a,x)=>a+ +x.amount,0);$('#climit').textContent=money(S.limit);$('#cused').textContent=money(used);$('#cavailable').textContent=money(Math.max(0,S.limit-used));$('#cbill').textContent=S.manualBill==null?'Não informada':money(S.manualBill);$('#cardtable').innerHTML=S.purchases.length?'<table><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Ações</th></tr></thead><tbody>'+S.purchases.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.description)+'</td><td>'+money(x.amount)+'</td><td><button class="btn sm danger" data-del-purchase="'+x.id+'">Excluir</button></td></tr>').join('')+'</tbody></table>':blank(['Data','Descrição','Valor','Ações'])}
+function renderGoal(){let g=S.goal,p=g.target?Math.min(100,g.saved/g.target*100):0;$('#target').value=g.target||'';$('#saved').value=g.saved||'';$('#monthly').value=g.monthly||'';$('#goalSummary').innerHTML='<h3>'+money(g.saved)+' de '+money(g.target)+'</h3><div class="progress"><div style="width:'+p+'%"></div></div><div class="muted">'+p.toFixed(0)+'% concluído · Falta '+money(Math.max(0,g.target-g.saved))+'</div>';$('#equiplist').innerHTML=S.equipment.length?S.equipment.map(x=>'<p>'+esc(x.name)+' · '+money(x.price)+' <button class="btn sm danger" data-del-equip="'+x.id+'">Excluir</button></p>').join(''):'<div class="empty">Nenhum equipamento adicionado.</div>'}
+function render(){document.documentElement.dataset.theme=S.theme==='light'?'light':'dark';renderDash();renderTx();renderBills();renderCard();renderGoal()}
+function modal(title,body){$('#modal').innerHTML='<div class="modalbg" id="mbg"><div class="modal"><div class="head"><h2>'+title+'</h2><button class="btn sm" id="xmodal">Fechar</button></div>'+body+'</div></div>';$('#xmodal').onclick=()=>$('#modal').innerHTML='';$('#mbg').onclick=e=>{if(e.target.id==='mbg')$('#modal').innerHTML=''}}
+const catOptions=c=>cats.map(x=>'<option '+(x===c?'selected':'')+'>'+x+'</option>').join('');
+function txform(item={}){let edit=!!item.id;modal(edit?'Editar lançamento':'Novo lançamento','<form id="txform"><div class="formgrid"><div class="field"><label>Tipo</label><select name="type"><option value="income" '+(item.type==='income'?'selected':'')+'>Entrada</option><option value="expense" '+(item.type!=='income'?'selected':'')+'>Despesa</option></select></div><div class="field"><label>Data</label><input name="date" type="date" required value="'+esc(item.date||today())+'"></div><div class="field"><label>Valor (R$)</label><input name="amount" type="number" min=".01" step=".01" required value="'+esc(item.amount??'')+'"></div><div class="field wide"><label>Descrição</label><input name="description" required value="'+esc(item.description||'')+'"></div><div class="field wide"><label>Categoria</label><select name="category">'+catOptions(item.category||'Outros')+'</select></div></div><div class="modalfoot"><button class="btn primary">Salvar</button></div></form>');$('#txform').onsubmit=e=>{e.preventDefault();let d=Object.fromEntries(new FormData(e.target));d.amount=+d.amount;if(edit)S.transactions=S.transactions.map(x=>x.id===item.id?{...x,...d}:x);else S.transactions.push({id:id(),...d});$('#modal').innerHTML='';persist();say('Lançamento salvo')}}
+function billform(item={}){let edit=!!item.id;modal(edit?'Editar conta':'Nova conta','<form id="billform"><div class="formgrid"><div class="field wide"><label>Nome da conta</label><input name="name" required value="'+esc(item.name||'')+'"></div><div class="field"><label>Valor (R$)</label><input name="amount" type="number" min=".01" step=".01" required value="'+esc(item.amount??'')+'"></div><div class="field"><label>Vencimento</label><input name="due" type="date" required value="'+esc(item.due||today())+'"></div><div class="field"><label>Categoria</label><select name="category">'+catOptions(item.category||'Outros')+'</select></div><div class="field"><label>Status</label><select name="status"><option value="open" '+(item.status!=='paid'?'selected':'')+'>Em aberto</option><option value="paid" '+(item.status==='paid'?'selected':'')+'>Paga</option></select></div><div class="field wide"><label>Observações</label><input name="note" value="'+esc(item.note||'')+'"></div></div><div class="modalfoot"><button class="btn primary">Salvar conta</button></div></form>');$('#billform').onsubmit=e=>{e.preventDefault();let d=Object.fromEntries(new FormData(e.target));d.amount=+d.amount;if(edit)S.bills=S.bills.map(x=>x.id===item.id?{...x,...d}:x);else S.bills.push({id:id(),...d});$('#modal').innerHTML='';persist();say('Conta salva')}}
+function purchaseform(){modal('Registrar compra no cartão','<form id="pform"><div class="formgrid"><div class="field"><label>Data</label><input name="date" type="date" required value="'+today()+'"></div><div class="field"><label>Valor</label><input name="amount" type="number" min=".01" step=".01" required></div><div class="field wide"><label>Descrição</label><input name="description" required></div><div class="field wide"><label>Categoria</label><select name="category">'+catOptions('Alimentação')+'</select></div></div><div class="modalfoot"><button class="btn primary">Salvar compra</button></div></form>');$('#pform').onsubmit=e=>{e.preventDefault();let d=Object.fromEntries(new FormData(e.target));d.amount=+d.amount;S.purchases.push({id:id(),...d});$('#modal').innerHTML='';persist();say('Compra registrada')}}
+const navs=[['dashboard','◈ Visão geral'],['transactions','⇄ Movimentações'],['bills','▤ Contas e parcelas'],['card','▣ Cartão'],['goal','◎ Academia em casa'],['imports','⇧ Importar/exportar'],['settings','⚙ Configurações']];$('#nav').innerHTML=navs.map(x=>'<button data-page="'+x[0]+'" class="'+(x[0]==='dashboard'?'active':'')+'">'+x[1]+'</button>').join('');$('#mobilenav').innerHTML=navs.filter(x=>['dashboard','transactions','bills','card','settings'].includes(x[0])).map(x=>'<button data-page="'+x[0]+'" class="'+(x[0]==='dashboard'?'active':'')+'">'+x[1]+'</button>').join('');all('[data-page]').forEach(b=>b.onclick=()=>{go(b.dataset.page);all('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===b.dataset.page))});all('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));$('#month').value=month();$('#theme').onclick=()=>{S.theme=S.theme==='light'?'dark':'light';persist()};$('#theme2').onclick=$('#theme').onclick;$('#quick').onclick=$('#newtx').onclick=()=>txform();$('#newbill').onclick=()=>billform();$('#newpurchase').onclick=purchaseform;$('#month').onchange=renderDash;['txq','txtype','txmonth'].forEach(x=>$('#'+x).oninput=renderTx);$('#billq').oninput=renderBills;
+document.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.dataset.editTx){let x=S.transactions.find(x=>x.id===b.dataset.editTx);if(x)txform(x)}if(b.dataset.delTx&&confirm('Excluir lançamento?')){S.transactions=S.transactions.filter(x=>x.id!==b.dataset.delTx);persist()}if(b.dataset.editBill){let x=S.bills.find(x=>x.id===b.dataset.editBill);if(x)billform(x)}if(b.dataset.delBill&&confirm('Excluir conta?')){S.bills=S.bills.filter(x=>x.id!==b.dataset.delBill);persist()}if(b.dataset.pay&&confirm('Confirmar pagamento?')){let x=S.bills.find(x=>x.id===b.dataset.pay);if(x)x.status='paid';persist()}if(b.dataset.delPurchase&&confirm('Excluir compra?')){S.purchases=S.purchases.filter(x=>x.id!==b.dataset.delPurchase);persist()}if(b.dataset.delEquip){S.equipment=S.equipment.filter(x=>x.id!==b.dataset.delEquip);persist()}});
+$('#limit').onclick=()=>{let v=prompt('Limite do cartão (R$):',S.limit);if(v!==null&&v.trim()!==''&&Number(v)>=0){S.limit=+v;persist()}};$('#manualbill').onclick=()=>{let v=prompt('Valor da fatura (vazio para limpar):',S.manualBill??'');if(v!==null){S.manualBill=v.trim()===''?null:Number(v);persist()}};$('#savegoal').onclick=()=>{S.goal={target:Math.max(0,+$('#target').value||0),saved:Math.max(0,+$('#saved').value||0),monthly:Math.max(0,+$('#monthly').value||0)};persist();say('Meta salva')};$('#equipform').onsubmit=e=>{e.preventDefault();S.equipment.push({id:id(),name:$('#ename').value.trim(),price:+$('#eprice').value});e.target.reset();persist()};
+$('#export').onclick=()=>{let a=document.createElement('a'),blob=new Blob([JSON.stringify({app:'Meu Financeiro Premium',state:S},null,2)],{type:'application/json'});a.href=URL.createObjectURL(blob);a.download='meu-financeiro-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)};$('#restore').onclick=async()=>{let f=$('#backup').files[0];if(!f)return say('Selecione o backup');try{let d=JSON.parse(await f.text()),s=d.state||d;if(!Array.isArray(s.transactions)||!Array.isArray(s.bills))throw 0;if(!confirm('Substituir dados atuais pelo backup?'))return;S={...defaults(),...s};persist();say('Backup restaurado')}catch{say('Arquivo inválido')}};
+function parseCSV(txt){return txt.replace(/^\uFEFF/,'').split(/\r?\n/).filter(x=>x.trim()).map(line=>{let r=[],c='',q=false;for(let x of line){if(x==='"')q=!q;else if((x===','||x===';')&&!q){r.push(c.trim());c=''}else c+=x}r.push(c.trim());return r})}let pending=[];$('#readcsv').onclick=async()=>{let f=$('#csv').files[0];if(!f)return say('Selecione um CSV');try{let rows=parseCSV(await f.text()),h=rows.shift().map(x=>x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')),ix={date:h.indexOf('data'),description:h.indexOf('descricao'),type:h.indexOf('tipo'),category:h.indexOf('categoria'),amount:h.indexOf('valor')};if(Object.values(ix).some(x=>x<0))throw 0;pending=rows.map(r=>({id:id(),date:r[ix.date],description:r[ix.description],type:/income|entrada/i.test(r[ix.type])?'income':'expense',category:r[ix.category]||'Outros',amount:Number(String(r[ix.amount]).replace(/\./g,'').replace(',','.'))})).filter(x=>x.description&&x.amount>0);$('#preview').textContent=pending.length+' registro(s) identificados. Revise antes de importar.';$('#confirmcsv').hidden=!pending.length}catch{$('#preview').textContent='CSV inválido. Use data,descricao,tipo,categoria,valor.'}};$('#confirmcsv').onclick=()=>{if(confirm('Adicionar '+pending.length+' registro(s)?')){S.transactions.push(...pending);pending=[];persist();$('#confirmcsv').hidden=true;say('Importação concluída')}};
+$('#notify').onclick=async()=>{if(!('Notification'in window))return say('Notificações indisponíveis');let p=await Notification.requestPermission();say(p==='granted'?'Permissão concedida':'Permissão não concedida')};$('#clear').onclick=()=>{if(confirm('Apagar todos os dados locais? Faça backup antes.')){S=defaults();persist();say('Dados apagados')}};if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});render();
+})();</script></body></html>
