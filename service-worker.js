@@ -1,4 +1,4 @@
-const CACHE_NAME = "meu-financeiro-premium-v2";
+const CACHE_NAME = "meu-financeiro-premium-v3";
 const FILES = ["./", "./index.html", "./manifest.json"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
