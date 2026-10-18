@@ -1,0 +1,10 @@
+{
+  "name": "Meu Financeiro Premium",
+  "short_name": "Meu Financeiro",
+  "description": "Controle pessoal de receitas, despesas, contas, cartão e meta da academia.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c0d0f",
+  "theme_color": "#101010"
+}
